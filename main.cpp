@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip>
+#include <cstring>
 
 using namespace std;
 
@@ -15,18 +16,46 @@ void show_matrix(int **matrix,int x,int y) {
 	}
 }
 void create_matrix(int **&matrix,int &x,int &y,int argc,char *argv[]) {
-	x=argv[1][0]-'0';
-	y=argv[1][2]-'0';
-	matrix=new int*[x];
-	for (int i = 0; i < x; i++)
-		matrix[i]= new int [y];
-	for(int i=0,k=2; i<x; i++)
-		for(int j=0; j<y; j++,k++) {
-			if(k<argc)
-				matrix[i][j]=atoi(argv[k]);
-			else
-				matrix[i][j]=0;
+	int z=0;
+	bool arg=false;
+	while(z<strlen(argv[1])) {
+		if(argv[1][z]=='x' || argv[1][z]=='X') {
+			arg=true;
 		}
+		if(arg==false && (argv[1][z]>='0' && argv[1][z]<='9')) {
+			x=x*10+argv[1][z]-'0';
+		} else if(arg==true && (argv[1][z]>='0' && argv[1][z]<='9')) {
+			y=y*10+argv[1][z]-'0';
+		}
+		z++;
+	}
+	z=0;
+	if(x!=0 && y!=0) {
+		matrix=new int*[x];
+		for (int i = 0; i < x; i++)
+			matrix[i]= new int [y];
+		for(int i=0; i<x; i++)
+			for(int j=0; j<y; j++)
+				matrix[i][j]=0;
+		if(argc>3) {
+			for(int i=0,k=2; i<x; i++)
+				for(int j=0; j<y; j++,k++) {
+					if(k<argc)
+						matrix[i][j]=atoi(argv[k]);
+				}
+		} else if(argc==3) {
+			for(int i=0; i<x && argv[2][z]!='\0'; i++) {
+				for(int j=0; j<y && argv[2][z]!='\0'; j++) {
+					while(argv[2][z]>='0' && argv[2][z]<='9') {
+						matrix[i][j]=matrix[i][j]*10+argv[2][z]-'0';
+						z++;
+					}
+					z++;
+				}
+			}
+		}
+	} else
+		cout<<"incorrect size! matrix can't be created"<<endl;
 }
 void print_menu() {
 	cout<<endl;
@@ -47,18 +76,18 @@ int main(int argc,char *argv[]) {
 	int y=0;
 	if(argc>=2)
 		create_matrix(matrix,x,y,argc,argv);
-   int choice_exit;
-   while(1){
-   	int choice;
-   	print_menu();
-   	cin>>choice;
-	switch(choice) {
-		case 1:
-			show_matrix(matrix,x,y);
-			break;
-		case 8:
-		   return 0;	
+	int choice_exit;
+	while(1) {
+		int choice;
+		print_menu();
+		cin>>choice;
+		switch(choice) {
+			case 1:
+				show_matrix(matrix,x,y);
+				break;
+			case 8:
+				return 0;
+		}
 	}
-}
 	return 0;
 }
