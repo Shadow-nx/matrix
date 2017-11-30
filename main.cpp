@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip>
+#include <string>
 #include <cstring>
 
 using namespace std;
@@ -18,14 +19,19 @@ void show_matrix(int **matrix,int x,int y) {
 void create_matrix(int **&matrix,int &x,int &y,int argc,char *argv[]) {
 	int z=0;
 	bool arg=false;
+	string matrix_size;
 	while(z<strlen(argv[1])) {
 		if(argv[1][z]=='x' || argv[1][z]=='X') {
 			arg=true;
+			matrix_size="";
+			z++;
 		}
 		if(arg==false && (argv[1][z]>='0' && argv[1][z]<='9')) {
-			x=x*10+argv[1][z]-'0';
+			matrix_size=argv[1][z];
+			x=x*10+atoi(matrix_size.c_str());
 		} else if(arg==true && (argv[1][z]>='0' && argv[1][z]<='9')) {
-			y=y*10+argv[1][z]-'0';
+			matrix_size=argv[1][z];
+			y=y*10+atoi(matrix_size.c_str());
 		}
 		z++;
 	}
@@ -44,12 +50,15 @@ void create_matrix(int **&matrix,int &x,int &y,int argc,char *argv[]) {
 						matrix[i][j]=atoi(argv[k]);
 				}
 		} else if(argc==3) {
+			string number;
 			for(int i=0; i<x && argv[2][z]!='\0'; i++) {
 				for(int j=0; j<y && argv[2][z]!='\0'; j++) {
 					while(argv[2][z]>='0' && argv[2][z]<='9') {
-						matrix[i][j]=matrix[i][j]*10+argv[2][z]-'0';
+						number=number+argv[2][z];
 						z++;
 					}
+					matrix[i][j]=atoi(number.c_str());
+					number="";
 					z++;
 				}
 			}
