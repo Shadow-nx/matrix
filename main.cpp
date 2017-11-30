@@ -53,7 +53,7 @@ void create_matrix(int **&matrix,int &x,int &y,int argc,char *argv[]) {
 			string number;
 			for(int i=0; i<x && argv[2][z]!='\0'; i++) {
 				for(int j=0; j<y && argv[2][z]!='\0'; j++) {
-					int a=0;
+					int a=1;
 					if(argv[2][z]=='-') {
 						a=-1;
 						z++;
