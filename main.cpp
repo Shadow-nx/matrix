@@ -53,12 +53,18 @@ void create_matrix(int **&matrix,int &x,int &y,int argc,char *argv[]) {
 			string number;
 			for(int i=0; i<x && argv[2][z]!='\0'; i++) {
 				for(int j=0; j<y && argv[2][z]!='\0'; j++) {
-					while(argv[2][z]>='0' && argv[2][z]<='9') {
-						number=number+argv[2][z];
+					int a=0;
+					if(argv[2][z]=='-') {
+						a=-1;
 						z++;
 					}
-					matrix[i][j]=atoi(number.c_str());
-					number="";
+					while(argv[2][z]>='0' && argv[2][z]<='9') {
+						number=argv[2][z];
+						matrix[i][j]=matrix[i][j]*10+atoi(number.c_str());
+						z++;
+						number="";
+					}
+					matrix[i][j]*=a;
 					z++;
 				}
 			}
